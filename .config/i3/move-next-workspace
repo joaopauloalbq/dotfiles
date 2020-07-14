@@ -1,0 +1,4 @@
+#!/bin/sh
+w=$(($(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name') + 1))
+i3-msg move to workspace $w
+i3-msg workspace $w

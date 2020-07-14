@@ -1,0 +1,77 @@
+py3status {
+   align = 'left'
+   markup = 'pango'
+   min_width = 20
+   separator = True
+   separator_block_width = 3
+
+   #color = '#eff0eb'
+   color_good = '#252525'
+   color_bad = '#252525'
+   color_degraded = '#252525'
+   #background = '#eff0eb'
+   #border = '#252525'
+   #border_top = 1
+   #border_bottom = 1
+   #border_left = 0
+   #border_right = 0
+
+   #min_length = 15
+   #position = 'right'
+}
+
+general {
+        output_format = "i3bar"
+        colors = false
+        markup = pango
+        interval = 1
+}
+
+order += "net_rate"
+order += "volume_status"
+order += "backlight"
+order += "networkmanager"
+order += "clock"
+
+cpu_usage {
+	max_threshold = 95
+	degraded_threshold = 80
+        format = "<span background='#e0ff6e'>    </span><span background='#eff0eb'> %usage </span>"
+}
+
+memory {
+        format = "<span background='#50fa7b'>  </span><span background='#eff0eb'> %used </span>"
+        threshold_degraded = "10%"
+}
+
+cpu_temperature 0 {
+        format = "<span background='#de4343'>    </span><span background='#eff0eb'> %degrees °C </span>"
+        path = "/sys/class/thermal/thermal_zone0/temp"
+}
+
+net_rate {
+        format = "<span background='#53aaa6'>    </span><span background='#eff0eb'> {down} </span> <span background='#a289c8'>    </span><span background='#eff0eb'> {up} </span>"
+}
+
+volume_status {
+        format = "<span background='#52a1c8'>    </span><span background='#eff0eb'> {percentage} % </span>"
+        format_muted = "<span background='#52a1c8'>    </span><span background='#eff0eb'> Mute </span>"
+}
+
+backlight {
+        format = "<span background='#f8ff91'>  盛  </span><span background='#eff0eb'> {level} % </span>"
+}
+
+mega_sync {
+        format = "<span background='#ff4242'>  M  </span><span background='#eff0eb'> {format_sync} </span>"
+}
+
+networkmanager {
+        devices = ['w*']
+        format_device = "<span background='#52c88b'>    </span><span background='#eff0eb'> {general_connection} </span>"
+}
+
+clock {
+        format_time = "%a %-d %b %H:%M"
+        format = "<span background='#ff6b69'>    </span><span background='#eff0eb'> {Local} </span> "
+}

@@ -1,0 +1,73 @@
+Xft.dpi:                        96
+URxvt*termName:                 rxvt-unicode-256color
+URxvt.font:                     xft:NotoSansMono Nerd Font:size=10,xft:Noto Color Emoji:size=10
+URxvt.depth:                    0
+URxvt*lineSpace:                1
+URxvt.letterSpace:              -1
+URxvt.iso14755:                 false
+URxvt.iso14755_52:              false
+URxvt.scrollBar:                false
+URxvt*loginShell:               true
+URxvt.externalBorder:           6
+
+
+!! Common Keybinds for Navigations
+
+URxvt.keysym.Shift-Up: command:\033]720;1\007
+URxvt.keysym.Shift-Down: command:\033]721;1\007
+URxvt.keysym.Control-Up: \033[1;5A
+URxvt.keysym.Control-Down: \033[1;5B
+URxvt.keysym.Control-Right: \033[1;5C
+URxvt.keysym.Control-Left: \033[1;5D
+
+
+!! Copy Paste & Other Extensions
+
+URxvt.perl-ext-common: clipboard,font-size,keyboard-select,url-select
+URxvt.keysym.M-c:   perl:clipboard:copy
+URxvt.keysym.M-v:   perl:clipboard:paste
+URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+URxvt.clipboard.copycmd:  xsel -ib
+URxvt.clipboard.pastecmd: xsel -ob
+
+URxvt.keysym.C-equal:  font-size:increase
+URxvt.keysym.C-slash:  font-size:show
+
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
+
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: xdg-open
+URxvt.url-select.underline: true
+URvxt.url-select.button: 1
+
+
+! Colors
+
+*background:   #252525
+*foreground:   #eff0eb
+*cursorColor:  #19979d
+
+*color0:      #323232
+*color8:      #464646
+
+*color1:      #ff5855
+*color9:      #ff6b69
+
+*color2:      #38aaa4
+*color10:     #53aaa6
+
+*color3:      #f8ff73
+*color11:     #f8ff91
+
+*color4:      #429cc8
+*color12:     #52a1c8
+
+*color5:      #997ac8
+*color13:     #a289c8
+
+*color6:      #33c878
+*color14:     #52c88b
+
+*color7:      #eff0eb
+*color15:     #d8dee8
