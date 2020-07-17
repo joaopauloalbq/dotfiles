@@ -283,7 +283,7 @@ for_window [title="^Steam Keyboard$"] floating enable
 
 for_window [class="Spotify"] move to workspace 3
 for_window [class="mpv|feh|gwenview|libreoffice|Gimp|Inkscape|Chromium"] focus
-for_window [title="calc" class="kitty"] floating enable
+for_window [title="calc" class="URxv"] floating enable
 
 assign [class="Chromium"] 2
 assign [class="gimp|inkscape|libreoffice"] 4

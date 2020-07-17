@@ -1,0 +1,7 @@
+{
+    "Alt-/": "lua:comment.comment",
+    "CtrlUp": "ParagraphPrevious",
+    "CtrlDown": "ParagraphNext",
+    "CtrlShiftUp":    "SelectUp,ParagraphPrevious,SelectToEndOfLine",
+    "CtrlShiftDown":  "SelectDown,ParagraphNext,SelectToEndOfLine"
+}
