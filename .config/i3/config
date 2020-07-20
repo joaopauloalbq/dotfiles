@@ -37,9 +37,10 @@ bindsym $super+F2       exec i3-sensible-terminal -e nmtui
 bindsym $super+Shift+f  exec i3-sensible-terminal -e ranger
 bindsym $super+Shift+h  exec i3-sensible-terminal -e htop
 bindsym $super+Shift+m  exec i3-sensible-terminal -e calc
+bindsym $super+Shift+c  exec i3-sensible-terminal -e micro
+bindsym $super+Shift+t  exec i3-sensible-terminal -e transmission-daemon && tremc
 bindsym $super+Shift+w  exec chromium
 bindsym $super+Shift+k  exec kdevelop
-bindsym $super+Shift+c  exec code
 bindsym $super+Shift+s  exec spotify
 
 # scripts
@@ -81,7 +82,7 @@ bindsym $super+Shift+space focus mode_toggle
 # change container layout (stacked, tabbed, toggle split)
 bindsym $super+$alt+Up      layout stacking
 bindsym $super+$alt+Right   layout tabbed
-bindsym $super+$alt+Left    layout tabbed
+bindsym $super+$alt+Left    focus child, layout tabbed
 bindsym $super+$alt+Down    layout toggle split
 
 # hide | show window (minus is "-" and plus is "+".)
@@ -247,25 +248,25 @@ bar {
 	workspace_min_width 20
 
 	colors {
- 	background #252525
-  	statusline #252525
-   	separator #252525
+ 	background #262626
+  	statusline #262626
+   	separator #262626
 
         # colour                border  backgro text
-    	focused_workspace       #252525 #19979d #eff0eb
-     	active_workspace        #252525 #252525 #d8dee8
-      	inactive_workspace      #252525 #d8dee8 #252525
-       	urgent_workspace        #252525 #ebcb8b #252525
+    	focused_workspace       #262626 #19979d #eff0eb
+     	active_workspace        #262626 #262626 #d8dee8
+      	inactive_workspace      #262626 #d8dee8 #262626
+       	urgent_workspace        #262626 #ebcb8b #262626
     	}
 }
 
 # 			                    border	backgro	text	indicat	chi_bor
-client.focused                  #19979d #252525 #eff0eb #19979d #d8dee8
+client.focused                  #19979d #262626 #eff0eb #19979d #d8dee8
 client.focused_inactive         #1c1c1c #1c1c1c #d8dee8 #1c1c1c #1c1c1c
-client.unfocused                #252525 #252525 #d8dee8 #252525 #252525
-client.urgent                   #252525 #252525 #d8dee8 #252525 #252525
-client.placeholder              #252525 #252525 #d8dee8 #252525 #252525
-client.background               #252525
+client.unfocused                #262626 #262626 #d8dee8 #262626 #262626
+client.urgent                   #262626 #262626 #d8dee8 #262626 #262626
+client.placeholder              #262626 #262626 #d8dee8 #262626 #262626
+client.background               #262626
 
 # window rules, you can find the window class using xprop
 for_window [class=".*"] border pixel 0
@@ -284,9 +285,10 @@ for_window [title="^Steam Keyboard$"] floating enable
 for_window [class="Spotify"] move to workspace 3
 for_window [class="mpv|feh|gwenview|libreoffice|Gimp|Inkscape|Chromium"] focus
 for_window [title="calc" class="kitty"] floating enable
-
+for_window [title="ranger" class="kitty"] focus child, layout tabbed, focus
+#for_window [class="feh|mpv|zathura"] fullscreen enable
 assign [class="Chromium"] 2
-assign [class="gimp|inkscape|libreoffice"] 4
-assign [class="mpv|gwenview|feh"] 5
+assign [class="Gimp|Inkscape|libreoffice"] 4
+# assign [class="mpv|gwenview|feh"] 5
 assign [class="okular"] 6
 assign [class="TelegramDesktop|Skype|discord"] 7
