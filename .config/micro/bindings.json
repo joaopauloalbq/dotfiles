@@ -1,7 +1,9 @@
 {
     "Alt-/": "lua:comment.comment",
-    "CtrlUp": "ParagraphPrevious",
+    "Ctrl-b": "lua:initlua.pyrun",
     "CtrlDown": "ParagraphNext",
-    "CtrlShiftUp":    "SelectUp,ParagraphPrevious,SelectToEndOfLine",
-    "CtrlShiftDown":  "SelectDown,ParagraphNext,SelectToEndOfLine"
+    "CtrlShiftDown": "SelectDown,ParagraphNext,SelectToEndOfLine",
+    "CtrlShiftUp": "SelectUp,ParagraphPrevious,SelectToEndOfLine",
+    "CtrlUnderscore": "lua:comment.comment",
+    "CtrlUp": "ParagraphPrevious"
 }

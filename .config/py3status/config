@@ -5,12 +5,12 @@ py3status {
    separator = True
    separator_block_width = 3
 
-   #color = '#262626'
+   color = '#262626'
    color_good = '#262626'
    color_bad = '#262626'
    color_degraded = '#262626'
-   #background = '#eff0eb'
-   #border = '#262626'
+   # background = '#eff0eb'
+   # border = '#262626'
    #border_top = 1
    #border_bottom = 1
    #border_left = 0
@@ -29,14 +29,19 @@ general {
 
 order += "net_rate"
 order += "lm_sensors"
-order += "backlight"
 order += "volume_status"
+order += "backlight"
+order += "battery_level"
 order += "networkmanager"
 order += "clock"
 
+net_rate {
+	format = "<span background='#ae6cf0'>    </span><span background='#eff0eb'> {down} </span> <span background='#f06cae'>    </span><span background='#eff0eb'> {up} </span>"
+}
+
 lm_sensors {
     format_chip = '{format_sensor}'
-    format_sensor = '[<span background="#ff6b69">    </span><span background="#eff0eb"> {input}°C </span>]'
+	format_sensor = '[<span background="#ff7373">    </span><span background="#eff0eb"> {input}°C </span>]'
     sensors = ['core_0', 'temp1_input']
 }
 
@@ -47,33 +52,35 @@ cpu_usage {
 }
 
 memory {
-        format = "<span background='#50fa7b'>  </span><span background='#eff0eb'> %used </span>"
-        threshold_degraded = "10%"
-}
-
-net_rate {
-        format = "<span background='#ff7dc0'>    </span><span background='#eff0eb'> {down} </span> <span background='#a289c8'>    </span><span background='#eff0eb'> {up} </span>"
-}
-
-volume_status {
-        format = "<span background='#52c88b'>    </span><span background='#eff0eb'> {percentage} % </span>"
-        format_muted = "<span background='#52c88b'>    </span><span background='#eff0eb'> Mute </span>"
+	format = "<span background='#50fa7b'>  </span><span background='#eff0eb'> %used </span>"
+	threshold_degraded = "10%"
 }
 
 backlight {
-        format = "<span background='#f8ff91'>  盛  </span><span background='#eff0eb'> {level} % </span>"
+	format = "<span background='#f0f089'>  盛  </span><span background='#eff0eb'> {level} % </span>"
+}
+
+volume_status {
+	format = "<span background='#ffb973'>    </span><span background='#eff0eb'> {percentage} % </span>"
+	format_muted = "<span background='#ffb973'>    </span><span background='#eff0eb'> Mute </span>"
+}
+
+battery_level {
+	notification = True
+	notify_low_level = True
+	format = "<span background='#5ac891'>    </span><span background='#eff0eb'> {percent} % </span>"
 }
 
 mega_sync {
-        format = "<span background='#ff4242'>  M  </span><span background='#eff0eb'> {format_sync} </span>"
+	format = "<span background='#ff4242'>  M  </span><span background='#eff0eb'> {format_sync} </span>"
 }
 
 networkmanager {
-        devices = ['w*']
-        format_device = "<span background='#53aaa6'>    </span><span background='#eff0eb'> {general_connection} </span>"
+	devices = ['w*']
+	format_device = "<span background='#5ac8b6'>  說  </span><span background='#eff0eb'> {general_connection} </span>"
 }
 
 clock {
-        format_time = "%a %-d %b %H:%M"
-        format = "<span background='#52a1c8'>    </span><span background='#eff0eb'> {Local} </span> "
+	format_time = "%a %-d %b %H:%M"
+	format = "<span background='#3d97f0'>    </span><span background='#eff0eb'> {Local} </span> "
 }
