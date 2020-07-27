@@ -46,23 +46,19 @@ bindsym $super+Shift+w  exec chromium
 bindsym $super+Shift+k  exec kdevelop
 bindsym $super+Shift+s  exec spotify
 
-# scripts
-bindsym $super+Escape exec "~/Applications/seltr/seltr"
+# screen brightness controls
+bindsym XF86MonBrightnessUp     exec xbacklight -inc 20 # increase screen brightness
+bindsym XF86MonBrightnessDown   exec xbacklight -dec 20 # decrease screen brightness
 
 # change volume
 bindsym XF86AudioRaiseVolume  exec "amixer -q sset Master 5%+ unmute; py3-cmd refresh volume_status"
 bindsym XF86AudioLowerVolume  exec "amixer -q sset Master 5%- unmute; py3-cmd refresh volume_status"
 bindsym XF86AudioMute         exec "amixer -q sset Master toggle; py3-cmd refresh volume_status"
 
-# screen brightness controls
-bindsym XF86MonBrightnessUp     exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown   exec xbacklight -dec 20 # decrease screen brightness
-
 # spotify related key bindings
-bindsym XF86AudioPlay exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
-bindsym XF86AudioStop exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"
-bindsym XF86AudioPrev exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
-bindsym XF86AudioNext exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+bindsym $super+slash exec playerctl play-pause
+bindsym $super+comma exec playerctl previous
+bindsym $super+period exec playerctl next
 
 # kill focused window
 bindsym $super+q kill
@@ -271,6 +267,9 @@ client.urgent                   #262626 #262626 #d8dee8 #262626 #262626
 client.placeholder              #262626 #262626 #d8dee8 #262626 #262626
 client.background               #262626
 
+# scripts
+bindsym $super+Escape exec "~/Applications/seltr/seltr"
+
 # window rules, you can find the window class using xprop
 for_window [class=".*"] border pixel 0
 
@@ -295,3 +294,7 @@ assign [class="Gimp|Inkscape|libreoffice"] 4
 # assign [class="mpv|gwenview|feh"] 5
 assign [class="okular"] 6
 assign [class="TelegramDesktop|Skype|discord"] 7
+
+
+
+
