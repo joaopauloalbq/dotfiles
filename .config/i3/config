@@ -41,7 +41,7 @@ bindsym $super+Shift+f  exec i3-sensible-terminal -e ranger
 bindsym $super+Shift+h  exec i3-sensible-terminal -e htop
 bindsym $super+Shift+m  exec i3-sensible-terminal -e calc
 bindsym $super+Shift+c  exec i3-sensible-terminal -e micro
-bindsym $super+Shift+t  exec i3-sensible-terminal -e transmission-daemon && tremc
+bindsym $super+Shift+t  exec i3-sensible-terminal -e killall transmission-daemon && transmission-daemon && tremc
 bindsym $super+Shift+w  exec chromium
 bindsym $super+Shift+k  exec kdevelop
 bindsym $super+Shift+s  exec spotify
@@ -117,8 +117,8 @@ bindsym --whole-window $super+button4 workspace next_on_output
 bindsym --whole-window $super+button5 workspace prev_on_output
 bindsym $alt+Control+Right workspace next
 bindsym $alt+Control+Left workspace prev
-bindsym $alt+Control+Down exec ~/.config/i3/new-workspace
 bindsym $alt+Control+Up exec --no-startup-id ~/.config/i3/new-workspace-ahead
+bindsym $alt+Control+Down exec ~/.config/i3/new-workspace
 
 # change workspace with focused container
 bindsym $super+Control+1 move container to workspace 1
@@ -143,8 +143,10 @@ bindsym $super+Shift+7 move container to workspace 7, workspace 7
 bindsym $super+Shift+8 move container to workspace 8, workspace 8
 bindsym $super+Shift+9 move container to workspace 9, workspace 9
 bindsym $super+Shift+0 move container to workspace 0, workspace 0
-bindsym $super+$alt+Control+Right exec --no-startup-id ~/.config/i3/move-next-workspace
-bindsym $super+$alt+Control+Left exec --no-startup-id ~/.config/i3/move-prev-workspace
+bindsym $super+$alt+Control+Right move container to workspace next, workspace next
+bindsym $super+$alt+Control+Left move container to workspace prev, workspace prev
+bindsym $super+$alt+Control+Up exec --no-startup-id ~/.config/i3/move-new-workspace-ahead
+bindsym $super+$alt+Control+Down exec --no-startup-id ~/.config/i3/move-new-workspace
 
 workspace_auto_back_and_forth yes
 
