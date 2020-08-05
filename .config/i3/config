@@ -159,7 +159,7 @@ workspace_auto_back_and_forth yes
 
 # gaps
 gaps inner 6
-#smart_gaps on
+# smart_gaps on
 
 # Resize
 bindsym $super+Control+Right    resize shrink   width   4 px or 4 ppt

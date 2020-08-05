@@ -226,6 +226,7 @@
 .local/etc/
 .local/include/
 .local/lib/
+.local/share/
 .local/share/RecentDocuments/
 .local/share/TelegramDesktop/
 .local/share/Trash/
