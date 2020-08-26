@@ -31,9 +31,10 @@ prompt {
 }
 
 textbox {
-  background-color: #2e343f;
+  background-color: #383838;
+  border-color: #252525;
   border: 0 0 1px 0;
-  border-color: #282C33;
+  padding: 13px 13px;
 }
 
 entry {
@@ -72,5 +73,5 @@ element-icon {
 }
 
 element selected {
-  background-color: #19979d;
+  background-color: #37a9ab;
 }

@@ -47,12 +47,12 @@
     context = ctrl+shift+period
 
 [urgency_low]
-    background = "#383838"
+    background = "#404040"
     foreground = "#a8a8a8"
     timeout = 10
 
 [urgency_normal]
-    background = "#383838"
+    background = "#404040"
     foreground = "#a8a8a8"
     timeout = 10
 
@@ -61,3 +61,6 @@
     foreground = "#a8a8a8"
     frame_color = "#d64e4e"
     timeout = 0
+
+[modifying]
+	fullscreen = pushback

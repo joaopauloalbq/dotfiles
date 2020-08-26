@@ -1,7 +1,7 @@
 py3status {
    align = 'left'
    markup = 'pango'
-   min_width = 20
+   min_width = 40
    separator = True
    separator_block_width = 3
 
@@ -27,7 +27,10 @@ general {
         interval = 1
 }
 
-# order += "net_rate"
+# order += window
+#order += "net_rate"
+order += "pomodoro"
+order += "mega_sync"
 order += "lm_sensors"
 order += "volume_status"
 order += "backlight"
@@ -35,13 +38,28 @@ order += "battery_level"
 order += "networkmanager"
 order += "clock"
 
+window {
+    format = '{title}'
+}
+
+pomodoro {
+	format = "{mmss}"
+	format_stopped = "<span background='#f06cae'>    </span><span background='#eff0eb'> {mmss} </span>"
+	format_active = "<span background='#f06cae'>    </span><span background='#eff0eb'> {mmss} </span>" 
+	format_break = "<span background='#f06cae'>    </span><span background='#eff0eb'> {mmss} </span>"
+	format_break_stopped = "<span background='#f06cae'>    </span><span background='#eff0eb'> {mmss} </span>"
+	sound_pomodoro_start = "~/.ganbatte.mp3"
+	sound_pomodoro_end = "~/.yamete_kadasai.m4a"
+	sound_break_end = "~/.onii_chan.m4a"
+}
+
 net_rate {
-	format = "<span background='#ae6cf0'>    </span><span background='#eff0eb'> {down} </span> <span background='#f06cae'>    </span><span background='#eff0eb'> {up} </span>"
+	format = "<span background='#8973FF'>    </span><span background='#eff0eb'> {down} </span> <span background='#ae6cf0'>    </span><span background='#eff0eb'> {up} </span>"
 }
 
 lm_sensors {
     format_chip = '{format_sensor}'
-	format_sensor = '[<span background="#ff7373">    </span><span background="#eff0eb"> {input}°C </span>]'
+	format_sensor = '[<span background="#FF9A73">    </span><span background="#eff0eb"> {input}°C </span>]'
     sensors = ['core_0', 'temp1_input']
 }
 
@@ -57,22 +75,31 @@ memory {
 }
 
 backlight {
+	brightness_delta = 10
+	brightness_minimal = 0
 	format = "<span background='#f0f089'>  盛  </span><span background='#eff0eb'> {level} % </span>"
 }
 
 volume_status {
-	format = "<span background='#ffb973'>    </span><span background='#eff0eb'> {percentage} % </span>"
-	format_muted = "<span background='#ffb973'>    </span><span background='#eff0eb'> Mute </span>"
+# 
+	# blocks = '奄奄奄奄奔奔墳墳墳'
+	format = "<span background='#FFBA73'>    </span><span background='#eff0eb'> {percentage} % </span>"
+	format_muted = "<span background='#FFBA73'>    </span><span background='#eff0eb'> Mute </span>"
 }
 
 battery_level {
+	format = "<span background='#5ac891'>  {icon}  </span><span background='#eff0eb'> {percent} % </span>"
+	# blocks = ''
+	# charging_character = ''
+	blocks = ''
+	charging_character = ''
 	notification = True
 	notify_low_level = True
-	format = "<span background='#5ac891'>    </span><span background='#eff0eb'> {percent} % </span>"
+	color_charging = '#262626'
 }
 
 mega_sync {
-	format = "<span background='#ff4242'>  M  </span><span background='#eff0eb'> {format_sync} </span>"
+	format = "<span background='#ff7373'><b>  M  </b></span><span background='#eff0eb'> {format_sync} </span>"
 }
 
 networkmanager {

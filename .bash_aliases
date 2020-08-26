@@ -9,4 +9,6 @@ alias stconf='micro ~/.config/py3status/config'
 alias duconf='micro ~/.config/dunst/dunstrc'
 alias piconf='micro ~/.config/picom/picom.conf'
 alias kiconf='micro ~/.config/kitty/kitty.conf'
+alias teconf='micro ~/.config/termite/config'
 alias transmission="transmission-daemon && tremc"
+alias lockscreen='"killall -SIGUSR1 dunst && i3lock -c 00000000 -B 1 -k --indicator --insidevercolor=5ac8c865 --insidewrongcolor=f0898965 --insidecolor=00000025 --ringvercolor=5ac8c8ff --ringwrongcolor=f06c6c65 --ring-width=1.0 --ringcolor=ffffff --line-uses-inside --keyhlcolor=5ac8c8ff --bshlcolor=5ac8c8ff --separatorcolor=00000065 --verifcolor=ffffffff --wrongcolor=ffffffff --timecolor=ffffffff --datecolor=ffffffff --greetercolor=ffffffff --timestr="%H:%M" --datestr="%A" --time-font="Noto Sans Thin:style=Thin" --date-font="Noto Sans Thin:style=Thin" --layout-font="Noto Sans Thin:style=Thin" --verif-font="Noto Sans Thin:style=Thin" --wrong-font="Noto Sans Thin:style=Thin" --greeter-font="Noto Sans Thin:style=Thin" --timesize=44 --datesize=20 && killall -SIGUSR2 dunst"'

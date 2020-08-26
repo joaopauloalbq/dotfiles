@@ -43,6 +43,9 @@ application/pdf=org.kde.okular.desktop
 image/jpeg=feh.desktop
 image/jpg=feh.desktop
 image/gif=mpv.desktop
+application/x-xdg-protocol-tg=telegramdesktop.desktop
+x-scheme-handler/tg=telegramdesktop.desktop
+x-terminal-emulator=termite.desktop
 
 [Removed Associations]
 image/x-xcf=org.kde.kolourpaint.desktop;okularApplication_kimgio.desktop;

@@ -1,5 +1,5 @@
 Dependências:
- - dunst feh mpv i3-gaps i3lock i3-scrot kitty micro nerd-fonts-noto-sans-mono py3status imagemagick ffmpegthumbnailer highlight unrar zip atool poppler mlocate calc
+ - i3-gaps i3lock-color i3-scrot py3status kitty dunst feh mpv micro nerd-fonts-noto-sans-mono imagemagick ffmpegthumbnailer highlight unrar zip atool poppler mlocate rofi-calc 
 
 AUR:
- - rofi-git picom-ibhagwan-git
+ - picom-ibhagwan-git rofi-git rofi-emoji rofi-greenclip udiskie-dmenu-git 

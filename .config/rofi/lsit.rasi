@@ -2,7 +2,9 @@ configuration {
   display-drun: "";
   display-window: "";
   display-windowcd: "";
-  display-ssh: "";
+  display-ssh: "";  
+  display-calc: "";
+  display-emoji: "🙂";
   show-icons: true;
   drun-display-format: "{icon} {name}";
 }
@@ -30,11 +32,10 @@ prompt {
 }
 
 textbox {
-  background-color: #2e343f;
+  background-color: #383838;
+  border-color: #252525;
   border: 0 0 1px 0;
-  border-color: #282C33;
-  padding: 8px 13px;
-
+  padding: 13px 13px;
 }
 
 entry {
@@ -45,6 +46,7 @@ listview {
   cycle: false;
   margin: 0 0 -1px 0;
   scrollbar: false;
+  dynamic: true;
 }
 
 element {
@@ -56,10 +58,11 @@ element-text {
   expand: true;
   vertical-align: 0.5;
   padding: 0px 13px;
+  
 }
 
 element selected {
-  background-color: #19979d;
+  background-color: #37a9ab;
 }
 
 element-icon {

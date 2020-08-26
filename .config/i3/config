@@ -1,61 +1,83 @@
+# set font
+font pango:Noto Sans 10
+
 # set modifier
 set $super Mod4
 set $alt Mod1
-
-# set font
-font xft:Noto Sans 10
+set $term termite
 
 # Use Mouse+$super to drag floating windows to their wanted position
 floating_modifier $super
 
+workspace_auto_back_and_forth yes
+
+# set default desktop layout (default is tiling)
+# workspace_layout tabbed <stacking|tabbed>
+
+# Size of floating windows
+#floating_minimum_size 75 x 50
+#floating_maximum_size 1300 x 740
+
+# gaps
+gaps inner 6
+# smart_gaps on
+
 # autostart
-exec --no-startup-id feh --bg-scale ~/.wallpaper.*
-exec --no-startup-id xsettingsd &
+exec_always --no-startup-id autotiling
+exec --no-startup-id feh --no-fehbg --bg-scale ~/.wallpaper.*
 exec --no-startup-id picom
 exec --no-startup-id dunst
-exec xrandr --output eDP-1 --off --output HDMI-1 --primary --mode 1440x900 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-2 --off
-#exec --no-startup-id megasync
+exec --no-startup-id udiskie
+exec --no-startup-id greenclip daemon
+#exec --no-startup-id exec "~/.screenlayout/monitoronly.sh"
+exec --no-startup-id "py3-cmd refresh mega_sync"
 
 # start terminal
-bindsym $super+Return   exec i3-sensible-terminal
+bindsym $super+Return   exec $term
 
 # launchers
 # sudo updatedb -U "$HOME" -e "$HOME/.config" -e "$HOME/.local" -e "$HOME/.cache"
 bindsym $super+s        exec xdg-open "$(locate -e -i --regex "$HOME/[^\.]+" | rofi -theme lsit.rasi -threads 0 -dmenu -i -p "")"
 bindsym $super+a        exec rofi -show window -theme lsit.rasi
 bindsym $alt+Tab        exec rofi -show window -theme lsit.rasi
+bindsym $super+b  		exec rofi -show calc -theme lsit.rasi -modi calc -no-show-match -no-sort
 bindsym $super+w        exec rofi -show windowcd -theme lsit.rasi
 bindsym $alt+Shift+Tab 	exec rofi -show windowcd -theme lsit.rasi
 bindsym $super+d        exec rofi -show drun -theme vreti.rasi
-bindsym $super+$alt+d   exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'Noto Sans:size=11'"
+bindsym $super+e  		exec rofi -show emoji -modi emoji -theme lsit.rasi
+bindsym $super+c  		exec rofi -theme lsit.rasi -p "" -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindsym $super+m  		exec UDISKIE_DMENU_LAUNCHER="rofi" udiskie-dmenu -theme lsit.rasi -p "禍" -matching regex -dmenu -i -no-custom -multi-select
 
-# Screenshot
-bindsym Print           exec scrot $HOME/Imagens/Screenshots/`date +%Y-%m-%d_%H:%M:%S`.png ; exec notify-send -i "accessories-screenshot" "Captura de tela" "realizada"
-bindsym $super+Print    exec scrot -u $HOME/Imagens/Screenshots/`date +%Y-%m-%d_%H:%M:%S`.png ; exec notify-send -i "accessories-screenshot" "Captura de tela" "realizada"bindsym Control+Print   exec --no-startup-id $HOME/.config/i3/scrot-select ; exec notify-send -i "accessories-screenshot" "Captura de tela" "realizada"
-bindsym Control+Print 	exec scrot -s $HOME/Imagens/Screenshots/`date +%Y-%m-%d_%H:%M:%S`.png ; exec notify-send -i "accessories-screenshot" "Captura de tela" "realizada"bindsym Control+Print   exec --no-startup-id $HOME/.config/i3/scrot-select ; exec notify-send -i "accessories-screenshot" "Captura de tela" "realizada"
+
+# lock screen
+bindsym $super+l        exec  i3lock -c 00000000 -B 1 -k --indicator --insidevercolor=5ac8c865 --insidewrongcolor=f0898965 --insidecolor=00000025 --ringvercolor=5ac8c8ff --ringwrongcolor=f06c6c65 --ring-width=1.0 --ringcolor=ffffff --line-uses-inside --keyhlcolor=5ac8c8ff --bshlcolor=5ac8c8ff --separatorcolor=00000065 --verifcolor=ffffffff --wrongcolor=ffffffff --timecolor=ffffffff --datecolor=ffffffff --greetercolor=ffffffff --timestr="%H:%M" --datestr="%A" --time-font="Noto Sans Thin:style=Thin" --date-font="Noto Sans Thin:style=Thin" --layout-font="Noto Sans Thin:style=Thin" --verif-font="Noto Sans Thin:style=Thin" --wrong-font="Noto Sans Thin:style=Thin" --greeter-font="Noto Sans Thin:style=Thin" --timesize=44 --datesize=20
 
 # apps keybinds
-bindsym $super+l        exec i3lock -i $HOME/.wallpaper.*
-bindsym $super+F2       exec i3-sensible-terminal -e nmtui
-bindsym $super+Shift+f  exec i3-sensible-terminal -e ranger
-bindsym $super+Shift+h  exec i3-sensible-terminal -e htop
-bindsym $super+Shift+m  exec i3-sensible-terminal -e calc
-bindsym $super+Shift+c  exec i3-sensible-terminal -e micro
-bindsym $super+Shift+t  exec i3-sensible-terminal -e killall transmission-daemon && transmission-daemon && tremc
+bindsym $super+Shift+n  exec $term -e nmtui -t nmtui
+bindsym $super+Shift+f  exec $term -e ranger -t ranger
+bindsym $super+Shift+h  exec $term -e htop -t htop
+bindsym $super+Shift+c  exec $term -e micro -t micro
+bindsym $super+Shift+t  exec $term -e 'killall transmission-daemon && transmission-daemon && tremc'
+bindsym $super+Shift+s  exec spotify
 bindsym $super+Shift+w  exec chromium
 bindsym $super+Shift+k  exec kdevelop
-bindsym $super+Shift+s  exec spotify
+
+# Screenshot
+bindsym Print --release 			exec "scrot $HOME/Imagens/Screenshots/$(date +%Y-%m-%d_%H:%M:%S).png" ; exec notify-send -i "accessories-screenshot" "Captura de tela" "Diga Xxxx..."
+bindsym $super+Print				exec "scrot -u $HOME/Imagens/Screenshots/$(date +%Y-%m-%d_%H:%M:%S).png"
+bindsym Shift+Print --release		exec "scrot -s $HOME/Imagens/Screenshots/$(date +%Y-%m-%d_%H:%M:%S).png"
+bindsym Control+Print --release		exec "scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
 
 # screen brightness controls
-bindsym XF86MonBrightnessUp     exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown   exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86MonBrightnessUp     exec "xbacklight -inc 10; py3-cmd refresh backlight"
+bindsym XF86MonBrightnessDown   exec "xbacklight -dec 10; py3-cmd refresh backlight"
 
 # change volume
 bindsym XF86AudioRaiseVolume  exec "amixer -q sset Master 5%+ unmute; py3-cmd refresh volume_status"
 bindsym XF86AudioLowerVolume  exec "amixer -q sset Master 5%- unmute; py3-cmd refresh volume_status"
 bindsym XF86AudioMute         exec "amixer -q sset Master toggle; py3-cmd refresh volume_status"
 
-# spotify related key bindings
+# media key bindings
 bindsym $super+slash exec playerctl play-pause
 bindsym $super+comma exec playerctl previous
 bindsym $super+period exec playerctl next
@@ -148,18 +170,11 @@ bindsym $super+$alt+Control+Left move container to workspace prev, workspace pre
 bindsym $super+$alt+Control+Up exec --no-startup-id ~/.config/i3/move-new-workspace-ahead
 bindsym $super+$alt+Control+Down exec --no-startup-id ~/.config/i3/move-new-workspace
 
-workspace_auto_back_and_forth yes
-
-# set default desktop layout (default is tiling)
-# workspace_layout tabbed <stacking|tabbed>
-
-# Size of floating windows
-#floating_minimum_size 75 x 50
-#floating_maximum_size 1300 x 740
-
-# gaps
-gaps inner 6
-# smart_gaps on
+# Move focused workspace to outputs (monitors)
+bindsym $super+Control+Shift+Right move workspace to output right
+bindsym $super+Control+Shift+Left move workspace to output left
+bindsym $super+Control+Shift+Up move workspace to output up
+bindsym $super+Control+Shift+Down move workspace to output down
 
 # Resize
 bindsym $super+Control+Right    resize shrink   width   4 px or 4 ppt
@@ -175,61 +190,145 @@ bindsym $super+Shift+r restart
 # Press one of + / - (in-/decrement for current workspace)
 # or 0 (remove gaps for current workspace). If you also press Shift
 # with these keys, the change will be global for all workspaces.
-set $mode_gaps Gaps: (o) outer, (i) inner
-set $mode_gaps_outer  + | - | 0  (local),  Shift +  + | - | 0  (global)
-set $mode_gaps_inner  + | - | 0  (local),  Shift +  + | - | 0  (global)
+set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_verti Vertical Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_top Top Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_right Right Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_bottom Bottom Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_left Left Gaps: +|-|0 (local), Shift + +|-|0 (global)
 bindsym $super+Shift+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
-    bindsym o      mode "$mode_gaps_outer"
-    bindsym i      mode "$mode_gaps_inner"
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym h      mode "$mode_gaps_horiz"
+        bindsym v      mode "$mode_gaps_verti"
+        bindsym t      mode "$mode_gaps_top"
+        bindsym r      mode "$mode_gaps_right"
+        bindsym b      mode "$mode_gaps_bottom"
+        bindsym l      mode "$mode_gaps_left"
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
 
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 6
+        bindsym minus gaps outer current minus 6
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 6
+        bindsym Shift+minus gaps outer all minus 6
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
 }
 mode "$mode_gaps_inner" {
-    bindsym plus  gaps inner current plus 6
-    bindsym minus gaps inner current minus 6
-    bindsym 0     gaps inner current set 0
+        bindsym plus  gaps inner current plus 6
+        bindsym minus gaps inner current minus 6
+        bindsym 0     gaps inner current set 0
 
-    bindsym Shift+plus  gaps inner all plus 6
-    bindsym Shift+minus gaps inner all minus 6
-    bindsym Shift+0     gaps inner all set 0
+        bindsym Shift+plus  gaps inner all plus 6
+        bindsym Shift+minus gaps inner all minus 6
+        bindsym Shift+0     gaps inner all set 0
 
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
 }
-mode "$mode_gaps_outer" {
-    bindsym plus  gaps outer current plus 6
-    bindsym minus gaps outer current minus 6
-    bindsym 0     gaps outer current set 0
+mode "$mode_gaps_horiz" {
+        bindsym plus  gaps horizontal current plus 6
+        bindsym minus gaps horizontal current minus 6
+        bindsym 0     gaps horizontal current set 0
 
-    bindsym Shift+plus  gaps outer all plus 6
-    bindsym Shift+minus gaps outer all minus 6
-    bindsym Shift+0     gaps outer all set 0
+        bindsym Shift+plus  gaps horizontal all plus 6
+        bindsym Shift+minus gaps horizontal all minus 6
+        bindsym Shift+0     gaps horizontal all set 0
 
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_verti" {
+        bindsym plus  gaps vertical current plus 6
+        bindsym minus gaps vertical current minus 6
+        bindsym 0     gaps vertical current set 0
+
+        bindsym Shift+plus  gaps vertical all plus 6
+        bindsym Shift+minus gaps vertical all minus 6
+        bindsym Shift+0     gaps vertical all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_top" {
+        bindsym plus  gaps top current plus 6
+        bindsym minus gaps top current minus 6
+        bindsym 0     gaps top current set 0
+
+        bindsym Shift+plus  gaps top all plus 6
+        bindsym Shift+minus gaps top all minus 6
+        bindsym Shift+0     gaps top all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_right" {
+        bindsym plus  gaps right current plus 6
+        bindsym minus gaps right current minus 6
+        bindsym 0     gaps right current set 0
+
+        bindsym Shift+plus  gaps right all plus 6
+        bindsym Shift+minus gaps right all minus 6
+        bindsym Shift+0     gaps right all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_bottom" {
+        bindsym plus  gaps bottom current plus 6
+        bindsym minus gaps bottom current minus 6
+        bindsym 0     gaps bottom current set 0
+
+        bindsym Shift+plus  gaps bottom all plus 6
+        bindsym Shift+minus gaps bottom all minus 6
+        bindsym Shift+0     gaps bottom all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_left" {
+        bindsym plus  gaps left current plus 6
+        bindsym minus gaps left current minus 6
+        bindsym 0     gaps left current set 0
+
+        bindsym Shift+plus  gaps left all plus 6
+        bindsym Shift+minus gaps left all minus 6
+        bindsym Shift+0     gaps left all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
 }
 
 ## Display Management
 # Set the shortcuts and what they do
-set $mode_display Ext Screen (v) VGA ON, (h) HDMI ON, (x) VGA OFF, (y) HDMI OFF
+set $mode_display Ext Screen (t) HDMI ON TOP (t) HDMI ON RIGHT, (x) HDMI OFF
 mode "$mode_display" {
-    bindsym v exec --no-startup-id xrandr --output VGA1 --auto --right-of LVDS1, mode "default"
-    bindsym h exec --no-startup-id xrandr --output HDMI1 --auto --right-of LVDS1, mode "default"
-    bindsym x exec --no-startup-id xrandr --output VGA1 --auto --off, mode "default"
-    bindsym y exec --no-startup-id xrandr --output HDMI1 --auto --off, mode "default"
+    bindsym t exec --no-startup-id xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x900 --rotate normal --output DP1 --off --output HDMI1 --mode 1440x900 --pos 240x0 --rotate normal --output HDMI2 --off --output VIRTUAL1 --off; exec feh --no-fehbg --bg-scale ~/.wallpaper.*
+    bindsym r exec --no-startup-id xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --off --output HDMI1 --mode 1440x900 --pos 1920x90 --rotate normal --output HDMI2 --off --output VIRTUAL1 --off; exec feh --no-fehbg --bg-scale ~/.wallpaper.*
+    bindsym l exec --no-startup-id xrandr --output eDP1 --primary --mode 1920x1080 --pos 1440x0 --rotate normal --output DP1 --off --output HDMI1 --mode 1440x900 --pos 0x90 --rotate normal --output HDMI2 --off --output VIRTUAL1 --off; exec feh --no-fehbg --bg-scale ~/.wallpaper.*
+    bindsym x exec --no-startup-id xrandr --output HDMI1 --auto --off, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 # Declare here the shortcut to bring the display selection menu
-bindsym $super+F8 mode "$mode_display"
+bindsym $super+p mode "$mode_display"
 
 # Power control mode
-set $power (e)xit  (s)uspend  (r)eboot  shut(d)own 
+set $power (e)xit  (s)uspend (r)eboot  shut(d)own 
 bindsym $Super+Shift+q mode "$power"
 
 mode "$power" {
@@ -245,29 +344,30 @@ mode "$power" {
 # panel
 bar {
 	position top
-	status_command py3status
+	height 24
 	workspace_min_width 20
+	status_command py3status
 
 	colors {
- 	background #262626
-  	statusline #262626
-   	separator #262626
+ 	background #353535  	
+ 	statusline #353535
+   	separator #353535
 
         # colour                border  backgro text
-    	focused_workspace       #262626 #19979d #eff0eb
-     	active_workspace        #262626 #262626 #d8dee8
-      	inactive_workspace      #262626 #d8dee8 #262626
-       	urgent_workspace        #262626 #ebcb8b #262626
+    	focused_workspace       #353535 #37a9ab #fafafa
+     	active_workspace        #37a9ab #d8dee8 #2F9091
+      	inactive_workspace      #353535 #d8dee8 #353535
+       	urgent_workspace        #ff7373 #d8dee8 #353535
     	}
 }
 
 # 			                    border	backgro	text	indicat	chi_bor
-client.focused                  #19979d #262626 #eff0eb #19979d #d8dee8
-client.focused_inactive         #1c1c1c #1c1c1c #d8dee8 #1c1c1c #1c1c1c
-client.unfocused                #262626 #262626 #d8dee8 #262626 #262626
-client.urgent                   #262626 #262626 #d8dee8 #262626 #262626
-client.placeholder              #262626 #262626 #d8dee8 #262626 #262626
-client.background               #262626
+client.focused                  #37a9ab #353535 #eff0eb #2c2c2c #37a9ab
+client.focused_inactive         #2c2c2c #2c2c2c #d8dee8 #2c2c2c #2c2c2c
+client.unfocused                #2c2c2c #353535 #d8dee8 #353535 #2c2c2c
+client.urgent                   #2c2c2c #353535 #d8dee8 #353535 #2c2c2c
+client.placeholder              #2c2c2c #353535 #d8dee8 #353535 #2c2c2c
+client.background               #2c2c2c
 
 # scripts
 bindsym $super+Escape exec "~/Applications/seltr/seltr"
@@ -286,17 +386,16 @@ for_window [class="^Steam$" title="^Screenshot Uploader$"] floating enable
 for_window [class="^Steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
 for_window [title="^Steam Keyboard$"] floating enable
 
+for_window [class="TelegramDesktop"] floating enable
+for_window [instance="web.whatsapp.com" class="Chromium"] floating enable
 for_window [class="Spotify"] move to workspace 3
 for_window [class="mpv|feh|gwenview|libreoffice|Gimp|Inkscape|Chromium"] focus
-for_window [title="calc" class="kitty"] floating enable
-for_window [title="ranger" class="kitty"] focus child, layout tabbed, focus
-#for_window [class="feh|mpv|zathura"] fullscreen enable
+for_window [class="mpv|feh"] focus child, layout tabbed, focus
+for_window [class="okular"] focus child, layout tabbed, focus
+
+assign [instance="web.whatsapp.com" class="Chromium"] 7
+assign [instance="pt.overleaf" class="Chromium"] 4
 assign [class="Chromium"] 2
 assign [class="Gimp|Inkscape|libreoffice"] 4
-# assign [class="mpv|gwenview|feh"] 5
-assign [class="okular"] 6
 assign [class="TelegramDesktop|Skype|discord"] 7
-
-
-
-
+assign [class="okular"] 8
