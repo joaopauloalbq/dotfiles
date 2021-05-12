@@ -1,0 +1,13 @@
+configuration {
+	show-icons: true;
+	drun-display-format: "{icon} {name}";
+	theme: "/home/jp/.config/rofi/list.rasi";
+	display-window: "";
+	display-windowcd: "";
+	display-ssh: "";
+	display-drun: "";
+	display-file-browser: "";
+	display-calc: "";
+	me-select-entry: "";
+	me-accept-entry: "MousePrimary";
+}

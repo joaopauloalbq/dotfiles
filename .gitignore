@@ -317,3 +317,6 @@ Vídeos
 .calc_history
 .local/share/kdevappwizard/
 .local/share/kdevfiletemplates/
+
+.config/awesome/revelation
+.config/ranger/plugins/ranger_devicons
