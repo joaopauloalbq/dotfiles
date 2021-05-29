@@ -1,4 +1,3 @@
-
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
@@ -25,18 +24,13 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 
 local dpi = require('beautiful').xresources.apply_dpi
 
-naughty.config.padding = dpi(13)
-naughty.config.spacing = dpi(7)
-naughty.config.icon_dirs = { "/usr/share/icons/Papirus/48x48/apps/", "/usr/share/icons/Papirus/48x48/devices/", "/usr/share/icons/Papirus/48x48/status/", "/usr/share/icons/Papirus/24x24@2x/panel/" }
-naughty.config.icon_formats = { "svg" }
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
+    title = "Oops, there were errors during startup!",
+    text = awesome.startup_errors })
 end
 
 -- Handle runtime errors after startup
@@ -46,10 +40,10 @@ do
         -- Make sure we don't go into an endless error loop
         if in_error then return end
         in_error = true
-
+        
         naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
+        title = "Oops, an error happened!",
+        text = tostring(err) })
         in_error = false
     end)
 end
@@ -67,6 +61,11 @@ terminal = "xfce4-terminal"
 editor = os.getenv("EDITOR") or "micro"
 editor_cmd = terminal .. " -e " .. editor
 
+naughty.config.defaults.border_width = beautiful.notification_border_width
+naughty.config.padding = dpi(13)
+naughty.config.spacing = dpi(5)
+naughty.config.icon_formats = {"svg"}
+naughty.config.icon_dirs = {"/usr/share/icons/Papirus/48x48/apps/", "/usr/share/icons/Papirus/48x48/devices/", "/usr/share/icons/Papirus/48x48/status/", "/usr/share/icons/Papirus/24x24@2x/panel/"}
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
@@ -75,26 +74,28 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 altkey = "Mod1"
 
+lain.layout.termfair.nmaster = 3
+lain.layout.termfair.center.nmaster = 3
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
     -- awful.layout.suit.tile.top,
-    -- awful.layout.suit.fair,
+    awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
-    awful.layout.suit.magnifier,
-    -- awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
     -- lain.layout.termfair,
     -- lain.layout.termfair.center,
     -- lain.layout.cascade,
     -- lain.layout.cascade.tile,
-    awful.layout.suit.floating,
     lain.layout.centerwork,
     -- lain.layout.centerwork.horizontal,
+    -- awful.layout.suit.corner.nw,
+    -- awful.layout.suit.corner.ne,
+    -- awful.layout.suit.corner.sw,
+    -- awful.layout.suit.corner.se,
+    awful.layout.suit.floating,
+    -- awful.layout.suit.magnifier,
     awful.layout.suit.spiral.dwindle,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.tile.left,
@@ -202,23 +203,37 @@ local function setTitlebar(client, s)
     end
 end
 
-local function notifyBacklight(t)
-	awful.spawn.with_line_callback('xbacklight ' .. t .. ' 10 -time 0', {
+function notificationDisplayIcon(perc)
+    if perc == 100 then
+        return "notification-display-brightness-full"
+    elseif perc >= 80 then
+        return "notification-display-brightness-high"
+    elseif perc >= 40 then
+        return "notification-display-brightness-medium"
+    else
+        return "notification-display-brightness-low"
+    end
+end
+
+local function notifyBacklight(mode)
+	awful.spawn.with_line_callback('xbacklight ' .. mode .. ' 10 -time 0', {
 		exit = function()
 			awful.spawn.with_line_callback('xbacklight -get', {
-				stdout = function(vol)
+				stdout = function(perc)
 					if notification_display ~= nil then
 						notification_display = naughty.notify ({
 							replaces_id	= notification_display.id,
-							text        = string.rep("■", math.ceil(vol * 0.3)),
-							icon        = "notification-display-brightness-full",
+							text        = string.rep("■", math.ceil(perc * 0.3)),
+							icon        = notificationDisplayIcon(tonumber(perc)),
+							-- width	 = 345,
 							timeout  	= t_out,
 							preset   	= preset
 						})
 					else
 						notification_display = naughty.notify ({
-							text     = string.rep("■", math.ceil(vol * 0.3)),
-							icon     = "notification-display-brightness-full",
+							text     = string.rep("■", math.ceil(perc * 0.3)),
+							icon     = notificationDisplayIcon(tonumber(perc)),
+							-- width	 = 345,
 							timeout  = t_out,
 							preset   = preset
 						})
@@ -229,35 +244,33 @@ local function notifyBacklight(t)
 	})
 end
 
-function notificationIcon(vol)
-    if vol > 60 then
+function notificationAudioIcon(perc)
+    if perc > 65 then
         return "notification-audio-volume-high"
-    elseif vol >= 40 then
+    elseif perc >= 35 then
         return "notification-audio-volume-medium"
     else
         return "notification-audio-volume-low"
     end
 end
 
-
-
 local function notifySound(mode)
 	awful.spawn.with_line_callback('pamixer --' .. mode .. ' 5', {
 		exit = function()
 			awful.spawn.with_line_callback('pamixer --get-volume', {
-                stdout = function(vol)
+                stdout = function(perc)
 					if notification_audio ~= nil then
 						notification_audio = naughty.notify ({
 							replaces_id	= notification_audio.id,
-							text        = string.rep("■", math.ceil(vol * 0.3)),
-							icon        = "notification-audio-volume-high",
+							text        = string.rep("■", math.ceil(perc * 0.3)),
+							icon        = notificationAudioIcon(tonumber(perc)),
 							timeout  	= t_out,
 							preset   	= preset
 						})
 					else
 						notification_audio = naughty.notify ({
-							text     = string.rep("■", math.ceil(vol * 0.3)),
-							icon     = "notification-audio-volume-high",
+							text     = string.rep("■", math.ceil(perc * 0.3)),
+							icon        = notificationAudioIcon(tonumber(perc)),
 							timeout  = t_out,
 							preset   = preset
 						})
@@ -272,7 +285,7 @@ local function notifySoundMuted()
 	awful.spawn.with_line_callback('pamixer --toggle-mute', {
 		exit = function()
 			awful.spawn.with_line_callback('pamixer --get-volume', {
-                stdout = function(vol)
+                stdout = function(perc)
 					awful.spawn.with_line_callback('pamixer --get-mute', {
                         stdout = function(isMuted)
                             -- if notification_audio ~= nil then
@@ -281,7 +294,7 @@ local function notifySoundMuted()
                                     notification_audio = naughty.notify ({
                                         replaces_id	= notification_audio.id,
                                         fg          =   "#676767",
-                                        text        = string.rep("■", math.ceil(vol * 0.3)),
+                                        text        = string.rep("■", math.ceil(perc * 0.3)),
                                         icon        = "notification-audio-volume-muted",
                                         timeout  	= t_out,
                                         preset   	= preset
@@ -289,7 +302,7 @@ local function notifySoundMuted()
                                 else
                                     notification_audio = naughty.notify ({
                                         replaces_id	= notification_audio.id,
-                                        text        = string.rep("■", math.ceil(vol * 0.3)),
+                                        text        = string.rep("■", math.ceil(perc * 0.3)),
                                         icon        = "notification-audio-volume-high",
                                         timeout  	= t_out,
                                         preset   	= preset
@@ -305,7 +318,7 @@ local function notifySoundMuted()
                                     })
                                 else
                                     notification_audio = naughty.notify ({
-                                        text     = string.rep("■", math.ceil(vol * 0.3)),
+                                        text     = string.rep("■", math.ceil(perc * 0.3)),
                                         icon     = "notification-audio-volume-high",
                                         timeout  = t_out,
                                         preset   = preset
@@ -319,19 +332,6 @@ local function notifySoundMuted()
 		end,
 	})
 end
-
--- Autostart  
--- -- awful.spawn.once("redshift-gtk")
--- awful.spawn.single_instance("picom")
--- awful.spawn.single_instance("nm-applet")
--- awful.spawn.with_shell('sleep 0.5 && cbatticon -l 15 -c "systemctl suspend"')
--- -- awful.spawn.once("xfce4-power-manager")
--- awful.spawn.with_shell("sleep 0.6 && pasystray --notify=all") -- pa-applet
--- awful.spawn.with_shell("sleep 1 && megasync")
--- -- awful.spawn.once("blueman-applet")
--- awful.spawn.single_instance("clipmenud")
--- awful.spawn.single_instance("libinput-gestures")
--- awful.spawn.with_shell("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
@@ -391,14 +391,9 @@ awful.screen.connect_for_each_screen(function(s)
 		},
     }
     
-    -- Create widgets
-    -- local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-    -- local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
-	-- local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
-	-- local volume_widget = require('awesome-wm-widgets.experiments.volume.volume')
 	
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = 23})
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = 23}) --, opacity = 0.90
  	
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -414,10 +409,6 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             -- mykeyboardlayout,
-            -- brightness_widget({font = 'Noto Sans 11',path_to_icon = '/usr/share/icons/Papirus-Dark/symbolic/status/display-brightness-medium-symbolic.svg'}),
-            -- battery_widget({font = 'Noto Sans 11',path_to_icons = '/usr/share/icons/Papirus-Dark/symbolic/status/', show_current_level = true, margin_left = 8, margin_right = 10, display_notification = true, margins = 10}),
-			-- volume_widget({display_notification = true}), -- volume_audio_controller = 'alsa_only',
-			-- volume_widget({widget_type = 'icon_and_text'}),
             mytextclock,
             s.mylayoutbox,
         },
@@ -462,11 +453,11 @@ globalkeys = gears.table.join(
 		if naughty.is_suspended() then
 			naughty.notify({ title = "Do not disturb",
 			 				 text = "Desativado",
-			 				 icon = "changes-allow" })
+			 				 icon = "preferences-desktop-notification-bell" })
 		else
 			naughty.notify({ title = "Do not disturb",
 			 				 text = "Ativado",
-			 				 icon = "changes-prevent" })
+			 				 icon = "notification-disabled" })
 		end
 		naughty.toggle()
 	end, {description = "Do not disturb", group = "Notification"}),
@@ -648,8 +639,9 @@ globalkeys = gears.table.join(
 	awful.key({ modkey , "Shift" },  "q",     function () awful.spawn("rofi -modi 'power:~/.local/scripts/powermenu.sh' -show power -theme power.rasi") end,
 		 	{description = "Power menu", group = "launcher"}),
              
-	-- Apps 
-	awful.key({ modkey , "Shift" },  "n",     function () awful.spawn(terminal .. " -e nmtui") end,
+	-- Apps
+	awful.key({ altkey , "Shift" },  "n",     function () awful.spawn(terminal .. " -e nmtui") end),
+	awful.key({ modkey , "Shift" },  "n",     function () awful.spawn("networkmanager_dmenu") end,
 			 {description = "network launcher", group = "launcher"}),
 	awful.key({ modkey , "Shift" },  "f",     function () awful.spawn(terminal .. " -e ranger -T ranger") end,
 				 {description = "ranger file manager", group = "launcher"}),
@@ -668,51 +660,50 @@ globalkeys = gears.table.join(
 	
               
 	-- Lockscreen
-		awful.key({ modkey },            "l",     function () awful.spawn.with_shell("~/.local/scripts/lockscreen.sh") end,
-		    {description = "Lock Screen", group = "launcher"}),
-          
+    awful.key({ modkey },            "l",     function () awful.spawn.with_shell("~/.local/scripts/lockscreen.sh") end,
+        {description = "Lock Screen", group = "launcher"}),
+        
     -- Bright Keys
-        awful.key({}, "XF86MonBrightnessUp", function() notifyBacklight("+") end), 
-        awful.key({}, "XF86MonBrightnessDown", function() notifyBacklight("-") end),
+    awful.key({}, "XF86MonBrightnessUp", function() notifyBacklight("+") end), 
+    awful.key({}, "XF86MonBrightnessDown", function() notifyBacklight("-") end),
               
 	-- Volume Keys
-        awful.key({}, "XF86AudioRaiseVolume", function() notifySound("increase") end), 
-	    awful.key({}, "XF86AudioLowerVolume", function() notifySound("decrease") end), 
-	   
-	   awful.key({}, "XF86AudioMute", function() notifySoundMuted() end),
-	   
+    awful.key({}, "XF86AudioRaiseVolume", function() notifySound("increase") end), 
+    awful.key({}, "XF86AudioLowerVolume", function() notifySound("decrease") end), 
+    awful.key({}, "XF86AudioMute", function() notifySoundMuted() end),
+    
 	-- Media Keys	
-	   -- awful.key({}, "XF86AudioPlay", function()
-	   awful.key({modkey}, "/", function()
-	     awful.spawn("playerctl --player=%any,brave play-pause", false)
-	   end),
-	   -- awful.key({}, "XF86AudioNext", function()
-	   awful.key({modkey}, ".", function()
-	     awful.spawn("playerctl next", false)
-	   end),
-	   -- awful.key({}, "XF86AudioPrev", function()
-	   awful.key({modkey}, ",", function()
-	     awful.spawn("playerctl previous", false)
-	   end),
+    -- awful.key({}, "XF86AudioPlay", function()
+    awful.key({modkey}, "/", function()
+        awful.spawn("playerctl --player=spotify,%any play-pause", false)
+    end),
+    -- awful.key({}, "XF86AudioNext", function()
+    awful.key({modkey}, ".", function()
+        awful.spawn("playerctl --player=spotify,%any next", false)
+    end),
+    -- awful.key({}, "XF86AudioPrev", function()
+    awful.key({modkey}, ",", function()
+        awful.spawn("playerctl --player=spotify,%any previous", false)
+    end),
 	   
 	-- Screenshot
-	   awful.key({}, "Print", function () 
-	   	   	awful.spawn.with_shell("maim ~/Imagens/Screenshots/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png", false) end,
-	       	{description = "Print desktop", group = "Screenshot"}),
-       awful.key({ modkey }, "Print", function ()
-	   	   	awful.spawn.with_shell("maim -i $(xdotool getactivewindow) ~/Imagens/Screenshots/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png", false) end,
-	       	{description = "Print window", group = "Screenshot"}),
-       awful.key({ "Shift" }, "Print", nil, function ()
-	   		awful.spawn.with_shell("maim -s ~/Imagens/Screenshots/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png", false) end,
-	       	{description = "Print area", group = "Screenshot"}),
-	   awful.key({ "Control" }, "Print", nil, function ()
-		 	awful.spawn.with_shell("maim -s | xclip -selection c -t image/png", false) end,
-	       	{description = "Print area to clipboard", group = "Screenshot"}),
-	
+    awful.key({}, "Print", function () 
+        awful.spawn.with_shell("maim ~/Imagens/Screenshots/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png", false) end,
+    {description = "Print desktop", group = "Screenshot"}),
+    awful.key({ modkey }, "Print", function ()
+        awful.spawn.with_shell("maim -i $(xdotool getactivewindow) ~/Imagens/Screenshots/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png", false) end,
+    {description = "Print window", group = "Screenshot"}),
+    awful.key({ "Shift" }, "Print", nil, function ()
+        awful.spawn.with_shell("maim -s ~/Imagens/Screenshots/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png", false) end,
+    {description = "Print area", group = "Screenshot"}),
+    awful.key({ "Control" }, "Print", nil, function ()
+        awful.spawn.with_shell("maim -s | xclip -selection c -t image/png", false) end,
+    {description = "Print area to clipboard", group = "Screenshot"}),
+
 	-- Kill app
-	   awful.key({ altkey, "Control" }, "Delete", nil, function ()
-	   		 	awful.spawn("xkill") end,
-	   	       	{description = "Kill App"}),
+    awful.key({ altkey, "Control" }, "Delete", nil, function ()
+            awful.spawn("xkill") end,
+    {description = "Kill App"}),
 
     -- awful.key({ modkey }, "x",
               -- function ()
@@ -730,7 +721,7 @@ globalkeys = gears.table.join(
 		  -- {description = "show the menubar", group = "launcher"}),
 		  
 	awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-	              {description = "run prompt", group = "launcher"})
+        {description = "run prompt", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -782,7 +773,7 @@ clientkeys = gears.table.join(
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
-    awful.key({ modkey}, "n",
+    awful.key({ modkey, "Shift" }, "Up",
         function (c)
             c.maximized = not c.maximized
             c:raise()
@@ -909,72 +900,75 @@ awful.rules.rules = {
     -- Floating clients.
     { rule_any = {
         instance = {
-		  "DTA",  -- Firefox addon DownThemAll.
-		  "copyq",  -- Includes session name in class.
-		  "pinentry",
-		  "gnome-pomodoro",
-		  "nm-connection-editor",
-		  "pavucontrol",
-		  "file-roller",
+            "DTA",  -- Firefox addon DownThemAll.
+            "copyq",  -- Includes session name in class.
+            "pinentry",
+            "gnome-pomodoro",
+            "nm-connection-editor",
+            "pavucontrol",
+            "file-roller",
 		},
 		class = {
-		  "Blueman-manager",
-		  "Gpick",
-		  "Kruler",
-		  "MessageWin",  -- kalarm.
-		  "Sxiv",
-		  "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
-		  "Wpa_gui",
-		  "veromix",
-		  "xtightvncviewer",
-		  "Gnome-pomodoro",
-		  "Nm-connection-editor",
-		  "Pavucontrol",
-		  "File-roller",
-		  "Gnome-calculator"
+            "Blueman-manager",
+            "Gpick",
+            "Kruler",
+            "MessageWin",  -- kalarm.
+            "Sxiv",
+            "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
+            "Wpa_gui",
+            "veromix",
+            "xtightvncviewer",
+            "Gnome-pomodoro",
+            "Nm-connection-editor",
+            "Pavucontrol",
+            "File-roller",
+            "Gnome-calculator"
 		},
 		-- Note that the name property shown in xprop might be set slightly after creation of the client
 		-- and the name shown there might not match defined rules here.
 		name = {
-		  "Event Tester",  -- xev.
-		  "Picture-in-picture",
-		  "Settings",
-		  "com.github.davidmhewitt.torrential",
+            "Event Tester",  -- xev.
+            "Picture-in-picture",
+            "Settings",
+            "com.github.davidmhewitt.torrential",
 		},
 		role = {
-		  "AlarmWindow",  -- Thunderbird's calendar.
-		  "ConfigManager",  -- Thunderbird's about:config.
-		  "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-		  "xfce4-terminal-dropdown",
+            "AlarmWindow",  -- Thunderbird's calendar.
+            "ConfigManager",  -- Thunderbird's about:config.
+            "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+            "xfce4-terminal-dropdown",
 		}
-      }, properties = { floating = true }},
+    }, properties = { floating = true }},
       
       
     -- Add titlebars to normal clients and dialogs
     { rule_any = { type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
+        }, properties = { titlebars_enabled = false }
     },
-        
+    
+    { rule_any = { role = { "popup" }
+        }, properties = { hidden = true }
+    },  
     -- Game clients
     {
-      -- Most Steam windows (friends list, "Activate a new product", "An update
-      -- is available", etc.) should be floating…
-      rule_any = {class = {"^[Ss]team$"}, title = {"^[Ss]team$"}},
-      -- …but not the main window
-      exclude_any = { name = {"Steam"}}, -- TODO: Identify the main window
-      properties = { floating = true, size_hints_honor = true, tag = " 6 " },
+        -- Most Steam windows (friends list, "Activate a new product", "An update
+        -- is available", etc.) should be floating…
+        rule_any = {class = {"^[Ss]team$"}, title = {"^[Ss]team$"}},
+        -- …but not the main window
+        exclude_any = { name = {"Steam"}}, -- TODO: Identify the main window
+        properties = { floating = true, size_hints_honor = true, tag = " 6 " },
     },
     
    	{ rule_any = { name = { "Media viewer" }
   	}, properties = { ontop = true, fullscreen = true }},
 
     -- Rules
-    { rule = { class="MEGAsync" },
+    { rule = { class= "qvidcap" },
+	    properties = { floating = true, sticky = true, ontop = true, focus = false, placement = "bottom_right" } },
+    { rule = { class= "MEGAsync" },
 	    properties = { floating = true, placement = "top_right" } },
-	{ rule = { class="Nitrogen" },
-		    properties = { floating = true, placement = "top_right" } },
-	{ rule = { class = "qvidcap" },
-	    properties = { floating = true, sticky = true } },
+	{ rule = { class= "Nitrogen" },
+		properties = { floating = true, placement = "top_right" } },
   	{ rule = { class = "Gcolor3" },
   	    properties = { floating = true, sticky = true} },
 	{ rule = { class= "mpv" },
@@ -990,7 +984,7 @@ awful.rules.rules = {
 	{ rule = { instance="heimer", class="Heimer" },
 		properties = { floating = false, fullscreen = false } },	
     { rule = { instance="pt.overleaf", class="Chromium" },
-        properties = { tag = " 6 " } },
+        properties = { tag = " 6 ", floating = false } },
     { rule = { instance="web.whatsapp.com", class="Brave-browser" },
     	properties = { tag = " 8 " } },
     { rule = { class="TelegramDesktop" },
@@ -1030,13 +1024,6 @@ client.connect_signal("property::urgent", function(c)
     c:jump_to()
 end)
 
--- Rounded corners
--- client.connect_signal("manage", function (c)
---     c:set_shape(function(cr, width, height)
---         gears.shape.rounded_rect(cr, width, height, 4)
---     end)
--- end)
-
 -- Hook called when a client spawns
 client.connect_signal("manage", function(c) 
     setTitlebar(c, c.first_tag.layout == awful.layout.suit.floating) --c.floating or 
@@ -1057,30 +1044,34 @@ client.connect_signal("request::titlebars", function(c)
     )
 
     awful.titlebar(c, {size=26}) : setup {
-        { -- Left
-            -- awful.titlebar.widget.iconwidget(c),
-            awful.titlebar.widget.floatingbutton (c),
-            buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
-        },
-        { -- Middle
-            { -- Title
-                align  = "left",
-                widget = awful.titlebar.widget.titlewidget(c)
-            },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
-        },
-        { -- Right
-            awful.titlebar.widget.minimizebutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.closebutton    (c),
-            -- awful.titlebar.widget.stickybutton   (c),
-            -- awful.titlebar.widget.ontopbutton    (c),
-            layout = wibox.layout.fixed.horizontal()
-        },
-        layout = wibox.layout.align.horizontal
-    }
+	    {
+	        { -- Left
+	            -- awful.titlebar.widget.iconwidget(c),
+	            -- awful.titlebar.widget.floatingbutton (c),
+	            buttons = buttons,
+	            layout  = wibox.layout.fixed.horizontal
+	        },
+	        { -- Middle
+	            { -- Title
+	                align  = "left",
+	                widget = awful.titlebar.widget.titlewidget(c)
+	            },
+	            buttons = buttons,
+	            layout  = wibox.layout.flex.horizontal
+	        },
+	        { -- Right
+	            awful.titlebar.widget.minimizebutton (c),
+	            awful.titlebar.widget.maximizedbutton(c),
+	            awful.titlebar.widget.closebutton    (c),
+	            -- awful.titlebar.widget.stickybutton   (c),
+	            -- awful.titlebar.widget.ontopbutton    (c),
+	            layout = wibox.layout.fixed.horizontal()
+	        },
+	        layout = wibox.layout.align.horizontal
+	    },
+    	widget = wibox.container.margin,
+    	left = 8
+	}
 end)
 
 -- Show titlebars on tags with the floating layout
