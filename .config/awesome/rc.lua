@@ -52,7 +52,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("~/.config/awesome/themes/yaru/theme.lua")
-revelation.init({tag_name = "Expo", charorder = "asdfqwer"})
+revelation.init({tag_name = "Expo", charorder = "asdfqwergt"})
 -- local bling = require("bling")
 -- bling.module.flash_focus.enable()
 
@@ -62,8 +62,8 @@ editor = os.getenv("EDITOR") or "micro"
 editor_cmd = terminal .. " -e " .. editor
 
 naughty.config.defaults.border_width = beautiful.notification_border_width
-naughty.config.padding = dpi(13)
-naughty.config.spacing = dpi(5)
+naughty.config.padding = dpi(14) --13
+naughty.config.spacing = dpi(6)
 naughty.config.icon_formats = {"svg"}
 naughty.config.icon_dirs = {"/usr/share/icons/Papirus/48x48/apps/", "/usr/share/icons/Papirus/48x48/devices/", "/usr/share/icons/Papirus/48x48/status/", "/usr/share/icons/Papirus/24x24@2x/panel/"}
 -- Default modkey.
@@ -391,7 +391,6 @@ awful.screen.connect_for_each_screen(function(s)
 		},
     }
     
-	
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s, height = 23}) --, opacity = 0.90
  	
@@ -638,11 +637,11 @@ globalkeys = gears.table.join(
 			
 	awful.key({ modkey , "Shift" },  "q",     function () awful.spawn("rofi -modi 'power:~/.local/scripts/powermenu.sh' -show power -theme power.rasi") end,
 		 	{description = "Power menu", group = "launcher"}),
+	awful.key({ modkey ,         },  "n",     function () awful.spawn("networkmanager_dmenu") end,
+			 {description = "network launcher", group = "launcher"}),
              
 	-- Apps
 	awful.key({ altkey , "Shift" },  "n",     function () awful.spawn(terminal .. " -e nmtui") end),
-	awful.key({ modkey , "Shift" },  "n",     function () awful.spawn("networkmanager_dmenu") end,
-			 {description = "network launcher", group = "launcher"}),
 	awful.key({ modkey , "Shift" },  "f",     function () awful.spawn(terminal .. " -e ranger -T ranger") end,
 				 {description = "ranger file manager", group = "launcher"}),
 	awful.key({ modkey , "Shift" },  "h",     function () awful.spawn(terminal .. " -e htop -T htop") end,
@@ -993,8 +992,6 @@ awful.rules.rules = {
     	properties = { tag = " 7 " } },
     { rule = { class="discord" },
     	properties = { tag = " 7 " } },
-    { rule = { class="[Ss]potify" },
-        properties = { tag = " 9 " } },
 	{ rule = { class="okular" },
 		properties = { tag = " 9 ", switchtotag = true } ,
 		callback = function(c) 

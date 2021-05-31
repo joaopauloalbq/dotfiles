@@ -25,10 +25,23 @@ theme.fg_urgent     = "#ededed"
 theme.fg_minimize   = "#dedede"
 
 theme.useless_gap   = dpi(3) --3
-theme.border_width  = dpi(0)
-theme.border_normal = "#424242"
-theme.border_focus  = "#047B7B" 
-theme.border_marked = "#91231c"
+theme.border_width  = dpi(2)
+theme.border_normal = "#353535"
+theme.border_focus  = "#41C6C8" --"#64A7A7"
+theme.border_marked = "#353535"
+
+-- Variables set for theming notifications:
+-- notification_font
+-- notification_[bg|fg]
+-- notification_[width|height|margin]
+-- notification_[border_color|border_width|shape|opacity]
+-- theme.notification_height = dpi(60)
+theme.notification_border_width = theme.border_width
+theme.notification_bg = "#444445"
+theme.notification_border_color = "#41C6C8"
+theme.notification_icon_size = dpi(48)
+theme.notification_width = dpi(345)
+theme.notification_margin = dpi(8)  --6
 
 -- There are other variable sets
 -- overriding the yaru one when
@@ -43,8 +56,8 @@ theme.border_marked = "#91231c"
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
-theme.titlebar_bg_normal = "#2c2c2c"
-theme.titlebar_bg_focus = "#2c2c2c"
+theme.titlebar_bg_normal = "#3E3E3E"
+theme.titlebar_bg_focus = "#3E3E3E"
 theme.hotkeys_label_fg = "#ededed"
 theme.hotkeys_modifiers_fg = "#ededed"
 theme.hotkeys_description_font = theme.font
@@ -58,17 +71,6 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
     taglist_square_size, theme.fg_normal
 )
 
--- Variables set for theming notifications:
--- notification_font
--- notification_[bg|fg]
--- notification_[width|height|margin]
--- notification_[border_color|border_width|shape|opacity]
--- theme.notification_height = dpi(60)
-theme.notification_border_width = dpi(0)
-theme.notification_bg = "#444445"
-theme.notification_border_color = "#444445"
-theme.notification_icon_size = dpi(48)
-theme.notification_width = dpi(345)
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]

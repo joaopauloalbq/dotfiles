@@ -11,7 +11,7 @@ local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
 -- inherit default theme
-local theme = dofile(themes_path.."default/theme.lua")
+local theme = dofile(themes_path.."yaru/theme.lua")
 -- load vector assets' generators for this theme
 
 theme.font          = "sans 8"
