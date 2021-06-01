@@ -1,36 +1,30 @@
 configuration {
-  display-drun: "";
-  display-window: "";
-  display-windowcd: "";
-  display-ssh: "";
-  display-calc: "";
-  display-file-browser: "";
-  show-icons: true;
-  drun-display-format: "{icon} {name}";
-  me-select-entry: "";
-  me-accept-entry: "MousePrimary";
+	display-drun: "";
+	display-window: "";
+	display-windowcd: "";
+	display-ssh: "";
+	display-calc: "";
+	display-file-browser: "";
+	show-icons: true;
+	drun-display-format: "{icon} {name}";
+	me-select-entry: "";
+	me-accept-entry: "MousePrimary";
 }
 
 * {
-  font: "Noto Sans 11";
-  background-color: #333333;
-  border-color: #252525;
-  text-color: #eff0eb;
-  width: 684px;
-  height: 478px;
-  location: 0;
-  spacing: 0;
-}
-
-window {
-	border: 2;
-	border-radius: 5;
-    border-color: #41C6C8;
+	font: "Noto Sans 11";
+	background-color: #333333;
+	border-color: #252525;
+	text-color: #eff0eb;
+	width: 684px;
+	height: 478px;
+	location: 0;
+	spacing: 0;
 }
 
 inputbar {
-  border: 0 0 1px 0;
-  children: [prompt,entry];
+	border: 0 0 1px 0;
+	children: [prompt,entry];
 }
 
 prompt {
@@ -41,40 +35,40 @@ prompt {
 }
 
 entry {
-  padding: 12px;
+	padding: 12px;
 }
 
 textbox {
-  background-color: #333333;
-  border-color: #252525;
-  border: 0 0 1px 0;
-  padding: 13px 13px;
+	background-color: #333333;
+	border-color: #252525;
+	border: 0 0 1px 0;
+	padding: 13px 13px;
 }
 
 listview {
-  cycle: false;
-  margin: 0 0 -1px 0;
-  scrollbar: false;
-  dynamic: true;
+	cycle: false;
+	margin: 0 0 -1px 0;
+	scrollbar: false;
+	dynamic: true;
 }
 
 element {
-  border: 0 0 1px 0;
-  padding: 7px;
+	border: 0 0 1px 0;
+	padding: 7px;
 }
 
 element-text {
-  expand: true;
-  vertical-align: 0.5;
-  padding: 0px 13px;
-  spacing: 0;
+	expand: true;
+	vertical-align: 0.5;
+	padding: 0px 13px;
+	spacing: 0;
 }
 
 element selected {
-  background-color: #047B7B;
+	background-color: #047B7B;
 }
 
 element-icon {
-    size: 30px;
-    border: 0px;
+	size: 30px;
+	border: 0px;
 }

@@ -2,7 +2,7 @@ configuration {
 	display-emoji: "";
 	show-icons: false;
 	me-select-entry: "";
-  	me-accept-entry: "MousePrimary";
+	me-accept-entry: "MousePrimary";
 }
 
 * {
@@ -14,13 +14,6 @@ configuration {
 	height: 477px;
 	location: 0;
 }
-
-window {
-	border: 2;
-	border-radius: 5;
-	border-color: #41C6C8;
-}
-
 
 inputbar {
 	border: 0 0 1px 0;
@@ -35,7 +28,7 @@ prompt {
 }
 
 entry {
- 	padding: 12px;
+	padding: 12px;
 }
 
 textbox {

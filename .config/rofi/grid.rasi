@@ -1,85 +1,79 @@
 configuration {
-  display-drun: "";
-  display-window: "";
-  display-windowcd: "";
-  display-ssh: "";
-  show-icons: true;
-  drun-display-format: "{icon} {name}";
-  me-select-entry: "";
-  me-accept-entry: "MousePrimary";
+	display-drun: "";
+	display-window: "";
+	display-windowcd: "";
+	display-ssh: "";
+	show-icons: true;
+	drun-display-format: "{icon} {name}";
+	me-select-entry: "";
+	me-accept-entry: "MousePrimary";
 }
 
 
 * {
-  font: "Noto Sans 11";
-  background-color: #333333;
-  border-color: #252525;
-  text-color: #eff0eb;
-  width: 684px;
-  height: 478px;
-  location: 0;
-}
-
-window {
-	border: 2;
-	border-radius: 5;
-    border-color: #41C6C8;
+	font: "Noto Sans 11";
+	background-color: #333333;
+	border-color: #252525;
+	text-color: #eff0eb;
+	width: 684px;
+	height: 478px;
+	location: 0;
 }
 
 inputbar {
-  border: 0 0 1px 0;
-  children: [prompt,entry];
+	border: 0 0 1px 0;
+	children: [prompt,entry];
 }
 
 prompt {
-  font: "Noto Sans 13";	
-  vertical-align: 0.5;
-  padding: 0px 13px 0px 13px;
-  border: 0 1px 0 0;
+	font: "Noto Sans 13";
+	vertical-align: 0.5;
+	padding: 0px 13px 0px 13px;
+	border: 0 1px 0 0;
 }
 
 entry {
-  padding: 12px;
+	padding: 12px;
 }
 
 textbox {
-  background-color: #333333;
-  border-color: #252525;
-  border: 0 0 1px 0;
-  padding: 13px 13px;
+	background-color: #333333;
+	border-color: #252525;
+	border: 0 0 1px 0;
+	padding: 13px 13px;
 }
 
 listview {
-  cycle: false;
-  scrollbar: false;
-  columns: 6;
-  cycle: false;
-  dynamic: true;
-  layout: vertical;
-  padding:10px 10px 10px 10px;
-  margin: -2px 0px 0px 0px;
-  spacing: 10;
+	cycle: false;
+	scrollbar: false;
+	columns: 6;
+	cycle: false;
+	dynamic: true;
+	layout: vertical;
+	padding:10px 10px 10px 10px;
+	margin: -2px 0px 0px 0px;
+	spacing: 10;
 }
 
 element {
-    orientation:                    vertical;
-    border-radius:                  3px;
-    padding:                        10px 0px 10px 0px;
+	orientation:                    vertical;
+	border-radius:                  3px;
+	padding:                        10px 0px 10px 0px;
 }
 
 element-text {
-    expand:                         true;
-    horizontal-align:               0.5;
-    vertical-align:                 0.5;
-    padding:                        0px 5px;
-    margin:                         0px 0px 0px -3px;
+	expand:                         true;
+	horizontal-align:               0.5;
+	vertical-align:                 0.5;
+	padding:                        0px 5px;
+	margin:                         0px 0px 0px -3px;
 }
 
 element-icon {
-    size: 48px;
-    border: 0px;
+	size: 48px;
+	border: 0px;
 }
 
 element selected {
-  background-color: #047B7B;
+	background-color: #047B7B;
 }
